@@ -1,0 +1,116 @@
+.e1_body  {
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center
+}
+.e1_title {
+    color: white;
+    text-shadow:4px 4px 15px 0 black;
+    margin-bottom: 50px;
+    text-align:center;
+    font-family:"no-roboto", sans-serif;    
+}
+.e1_dashboards {
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:20px;
+}
+.e1_graph_div  {
+    width:100%;
+    height: 450px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+    margin:0 20px;
+}
+.e1_dropdown_div  {
+    padding: 5px 0 0 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.e1_dropdown  {
+    width:150px;
+}
+.e1_graph  {
+    width: 100%;
+    height:400px;;
+}
+.e1_div  {
+    width:100%;
+    height:400px;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:90px;
+}
+.e1_performance {
+    background-color: white;
+    box-shadow: #000000 4px 4px 15px 0px;
+    width: 95%;
+    height: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+}
+.e1_real_class{
+    color: blue;
+    font-size: 0.55em;
+    width: 100%;
+    text-align: center;
+}
+.e1_predicts{
+    color: red;
+    font-size: 0.55em;
+    width: 100%;
+    text-align: center;
+}
+.e1_metrics{
+    background-color: white;
+    box-shadow: black 4px 4px 15px 0px;
+    width: 25%;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+}
+.e1_matrix {
+    display:grid;
+    grid-template-rows:50px 50px;
+    grid-template-columns:50px 50px;
+    border:1px solid black;
+}
+.e1_successes {
+    border:1px solid black;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:green;
+}
+.e1_mistakes {
+    border:1px solid black;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:red;
+}
+.e1_score {
+    margin-right: 5px;
+    font-family:"no-roboto", sans-serif;    
+}
