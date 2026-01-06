@@ -9,4 +9,3 @@ dash==2.16.1
 scikit-learn==1.4.1.post1
 xgboost==2.0.3
 statsmodels==0.14.2
-selenium==4.23.1
