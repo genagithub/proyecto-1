@@ -25,15 +25,15 @@ df["LeaveOrNot_txt"] = df["LeaveOrNot"].apply(lambda x : map.get(x))
 
 
 x_train, x_test, y_train, y_test = train_test_split(
-                                                   df_encoded[df_encoded.columns[:-1]], # variables explicativas
-                                                   df_encoded["LeaveOrNot"], # variable objetivo
-                                                   test_size=0.1) # tamaño de prueba pequeño
+                                                   df_encoded[df_encoded.columns[:-1]],
+                                                   df_encoded["LeaveOrNot"], 
+                                                   test_size=0.1)
 
-tree_decision_clf = tree.DecisionTreeClassifier(criterion="entropy", # medida de aleatoriedad, determinará los nodos del modelo en base a la probabilidad de clasificar erroneamente una variable, pero sin darle mayor importancias a ciertas características
-                                           max_depth=6, # distancia entre el nodo(condición) principal y la última hoja(respuesta asociada), valores recomendados: 3-10
-                                           min_samples_split=6, # mínimo número de muestras requeridas para dividir un nodo, valores recomendados: 2-10
-                                           min_samples_leaf=5, #  mínimo número de muestras requeridas en cada hoja, valores recomendados: 1-10
-                                           ccp_alpha=0.003) # valor de post-poda(luego de que el modelo se ajute) que evita el sobreajuste 
+tree_decision_clf = tree.DecisionTreeClassifier(criterion="entropy",
+                                           max_depth=6, 
+                                           min_samples_split=6, 
+                                           min_samples_leaf=5, 
+                                           ccp_alpha=0.003)  
 
 model = tree_decision_clf.fit(x_train, y_train)
 
@@ -70,7 +70,6 @@ if F1_score < 0.6:
     color_f1 = "red"
 F1_score_str = str(F1_score)
 
-# creación de dashboard basado en la estructura HTML/CSS
 app = dash.Dash(__name__)
 
 app.layout = html.Div(id="body",className="e1_body",children=[
@@ -159,7 +158,8 @@ def update_graph(slct_var_cat,slct_var_num):
     barplot = px.bar(df_mean, x="LeaveOrNot_txt", y=slct_var_num, title="Medias estadísticas")
     barplot.update_layout(xaxis_title=" ", yaxis_title=" ")
     
-    return piechart,barplot
+    return piechart, barplot
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    port = int(os.environ.get("PORT", 8050)) 
+    app.run_server(host='0.0.0.0', port=port)
