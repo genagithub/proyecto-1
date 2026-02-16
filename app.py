@@ -70,6 +70,7 @@ if F1_score < 0.6:
 F1_score_str = str(F1_score)
 
 app = dash.Dash(__name__)
+server = app.server
 
 app.layout = html.Div(id="body",className="e1_body",children=[
 html.H1("Futuro de Empleados",id="title",className="e1_title"),
@@ -162,4 +163,5 @@ def update_graph(slct_var_cat,slct_var_num):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
     app.run_server(host='0.0.0.0', port=port)
+
 
