@@ -1,0 +1,165 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OrdinalEncoder 
+from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score, f1_score
+from sklearn import tree
+
+
+df  = pd.read_csv("data/employee.csv")
+
+df_encoded = df.copy()
+df_encoded[["Education","City","Gender","EverBenched"]] = OrdinalEncoder().fit_transform(df[["Education","City","Gender","EverBenched"]])
+
+map = {
+    0:"permanece",
+    1:"sale"
+}
+
+df["LeaveOrNot_txt"] = df["LeaveOrNot"].apply(lambda x : map.get(x))
+
+
+x_train, x_test, y_train, y_test = train_test_split(
+                                                   df_encoded[df_encoded.columns[:-1]], # variables explicativas
+                                                   df_encoded["LeaveOrNot"], # variable objetivo
+                                                   test_size=0.1) # tamaño de prueba pequeño
+
+tree_decision_clf = tree.DecisionTreeClassifier(criterion="entropy", # medida de aleatoriedad, determinará los nodos del modelo en base a la probabilidad de clasificar erroneamente una variable, pero sin darle mayor importancias a ciertas características
+                                           max_depth=6, # distancia entre el nodo(condición) principal y la última hoja(respuesta asociada), valores recomendados: 3-10
+                                           min_samples_split=6, # mínimo número de muestras requeridas para dividir un nodo, valores recomendados: 2-10
+                                           min_samples_leaf=5, #  mínimo número de muestras requeridas en cada hoja, valores recomendados: 1-10
+                                           ccp_alpha=0.003) # valor de post-poda(luego de que el modelo se ajute) que evita el sobreajuste 
+
+model = tree_decision_clf.fit(x_train, y_train)
+
+class_predicts = model.predict(x_test)
+class_real = y_test.values
+
+matrix_confusion = confusion_matrix(class_real,class_predicts)
+TP = matrix_confusion[0,0]
+FP = matrix_confusion[0,1]
+FN = matrix_confusion[1,0]
+TN = matrix_confusion[1,1]
+
+accuracy = accuracy_score(class_real, class_predicts)
+color_accuracy = "green"
+if accuracy < 0.6:
+    color_accuracy = "red"
+accuracy_str = str(accuracy)
+
+recall = recall_score(class_real, class_predicts)
+color_recall = "green"
+if recall < 0.6:
+    color_recall = "red"
+recall_str = str(recall)
+
+precision = precision_score(class_real, class_predicts)
+color_precision = "green"
+if precision < 0.6:
+    color_precision = "red"
+precision_str = str(precision)
+
+F1_score = f1_score(class_real, class_predicts)
+color_f1 = "green"
+if F1_score < 0.6:
+    color_f1 = "red"
+F1_score_str = str(F1_score)
+
+# creación de dashboard basado en la estructura HTML/CSS
+app = dash.Dash(__name__)
+
+app.layout = html.Div(id="body",className="e1_body",children=[
+html.H1("Futuro de Empleados",id="title",className="e1_title"),
+html.Div(className="e1_dashboards",children=[
+    html.Div(id="graph_div_1",className="e1_graph_div",children=[
+        html.Div(id="dropdown_div_1",className="e1_dropdown_div",children=[
+            dcc.Dropdown(id="dropdown_1",className="e1_dropdown",
+                        options = [
+                            {"label":"Educación","value":"Education"},
+                            {"label":"Año de incorporación","value":"JoiningYear"},
+                            {"label":"Ciudad","value":"City"},
+                            {"label":"Género","value":"Gender"},
+                            {"label":"Siempre en banca","value":"EverBenched"}
+                        ],
+                        value="Education",
+                        multi=False,
+                        clearable=False)
+        ]),
+        dcc.Graph(id="piechart",className="e1_graph",figure={})
+    ]),
+    html.Div(id="graph_div_2",className="e1_graph_div",children=[
+        html.Div(id="dropdown_div_2",className="e1_dropdown_div",children=[
+            dcc.Dropdown(id="dropdown_2",className="e1_dropdown",
+                        options = [
+                            {"label":"Edad","value":"Age"},
+                            {"label":"Nivel de pago","value":"PaymentTier"},
+                            {"label":"Experiencia en el dominio","value":"ExperienceInCurrentDomain"}
+                        ],
+                        value="Age",
+                        multi=False,
+                        clearable=False)
+        ]),
+        dcc.Graph(id="bar",className="e1_graph",figure={})
+    ]),
+]),
+    
+    html.Div(className="e1_div", children=[
+        html.Div(id="performance", className="e1_performance",children=[
+            html.P([html.B("Clases reales", style={"color":"blue"}),"   |   ",html.B("Predicciones",style={"color":"red"})], style={"text-align":"center","font-family":"sans-serif"}),
+            html.P("--------------------------------------------------------------------------------------------------------------------------------------",style={"margin":"0"}),
+            html.P(f"{class_real}", className="e1_real_class"),
+            html.P(f"{class_predicts}", className="e1_predicts")
+        ]),
+        html.Div(id="metrics", className="e1_metrics", children=[
+                html.P("Matriz de confusión", style={"font-size":"0.9em","text-align":"center","font-family":"sans-serif","font-weigth":"bold"}),
+                html.Div(id="matrix", className="e1_matrix", children=[
+                html.Div([html.B(TP,style={"color":"green","font-family":"sans-serif"})],id="TP",className="e1_successes"), 
+                html.Div([html.B(FP,style={"color":"red","font-family":"sans-serif"})],id="FP",className="e1_mistakes"),
+                html.Div([html.B(FN,style={"color":"red","font-family":"sans-serif"})],id="FN",className="e1_mistakes"),
+                html.Div([html.B(TN,style={"color":"green","font-family":"sans-serif"})],id="TN",className="e1_successes")
+                ]),
+                html.Div(id="scores",children=[
+                html.Ul(id="list",children=[
+                html.Li([f"Accuracy: ",html.B(accuracy_str[:4],style={"color":f"{color_accuracy}"})],id="accuracy",className="e1_score"),
+                html.Li([f"Recall: ",html.B(recall_str[:4],style={"color":f"{color_recall}"})],id="recall",className="e1_score"),
+                html.Li([f"Precision: ",html.B(precision_str[:4],style={"color":f"{color_precision}"})],id="precision",className="e1_score"),
+                html.Li([f"F1 Score: ",html.B(F1_score_str[:4],style={"color":f"{color_f1}"})],id="f1_score",className="e1_score")
+                ])
+                
+            ])
+        ])
+    ])
+])
+
+
+@app.callback(
+    [Output(component_id="piechart",component_property="figure"),
+    Output(component_id="bar",component_property="figure")],
+    [Input(component_id="dropdown_1",component_property="value"),
+    Input(component_id="dropdown_2",component_property="value")]
+)
+
+def update_graph(slct_var_cat,slct_var_num):
+    
+    df["JoiningYear"] = df["JoiningYear"].astype(str)
+    df_percentage = df.groupby(slct_var_cat)["LeaveOrNot"].mean().reset_index()
+    df_percentage["LeaveOrNot"] = round(df_percentage["LeaveOrNot"] * 100)
+    df_percentage["LeaveOrNot"] = df_percentage["LeaveOrNot"].astype(str)
+    df_percentage["var_percentage"] = df_percentage[slct_var_cat].astype(str)+"("+df_percentage["LeaveOrNot"]+"%)"
+    
+    piechart = px.pie(df_percentage, values="LeaveOrNot", names="var_percentage", title="Probabilidad de salida")
+    
+    df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
+    
+    barplot = px.bar(df_mean, x="LeaveOrNot_txt", y=slct_var_num, title="Medias estadísticas")
+    barplot.update_layout(xaxis_title=" ", yaxis_title=" ")
+    
+    return piechart,barplot
+
+if __name__ == "__main__":
+    app.run_server(debug=False)
