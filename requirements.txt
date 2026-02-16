@@ -1,6 +1,7 @@
 pandas
-matplotlib
+matplotlib.pyplot
 plotly
 dash
 scikit-learn
 gunicorn
+
