@@ -52,7 +52,7 @@
     flex-direction:row;
     justify-content:center;
     align-items:center;
-    margin-bottom:90px;
+    margin: 15px 15px 90px 15px;
 }
 .e1_performance {
     background-color: white;
