@@ -58,7 +58,7 @@
     background-color: white;
     box-shadow: #000000 4px 4px 15px 0px;
     width: 35%;
-    height: 210px;
+    height: 225px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -68,13 +68,15 @@
 }
 .e1_real_class{
     color: blue;
-    font-size: 1.55em;
+    font-size: 1em;
+    font-weight: bold; 
     width: 100%;
     text-align: center;
 }
 .e1_predicts{
     color: red;
-    font-size: 1.55em;
+    font-size: 1em;
+    font-weight: bold; 
     width: 100%;
     text-align: center;
 }
