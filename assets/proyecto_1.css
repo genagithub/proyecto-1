@@ -57,7 +57,7 @@
 .e1_performance {
     background-color: white;
     box-shadow: #000000 4px 4px 15px 0px;
-    width: 95%;
+    width: 35%;
     height: 210px;
     display: flex;
     flex-direction: column;
@@ -68,13 +68,13 @@
 }
 .e1_real_class{
     color: blue;
-    font-size: 0.55em;
+    font-size: 1.55em;
     width: 100%;
     text-align: center;
 }
 .e1_predicts{
     color: red;
-    font-size: 0.55em;
+    font-size: 1.55em;
     width: 100%;
     text-align: center;
 }
