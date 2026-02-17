@@ -69,10 +69,10 @@ if F1_score < 0.6:
     color_f1 = "red"
 F1_score_str = str(F1_score)
 
-predict_leave_percentage = class_predicts.mean() * 100
+predict_leave_percentage = class_predicts.flatten().mean() * 100
 predict_not_leave_percentage = 100 - predict_leave_percentage
 
-real_leave_percentage = class_real.mean() * 100
+real_leave_percentage = class_real.flatten().mean() * 100
 real_not_leave_percentage = 100 - real_leave_percentage
 
 app = dash.Dash(__name__)
@@ -169,6 +169,7 @@ def update_graph(slct_var_cat,slct_var_num):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
     app.run_server(host='0.0.0.0', port=port)
+
 
 
 
