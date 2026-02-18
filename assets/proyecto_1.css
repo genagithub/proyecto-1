@@ -13,6 +13,9 @@
     text-align:center;
     font-family:"no-roboto", sans-serif;    
 }
+.e1_title:hover{
+    cursor:pointer;
+}
 .e1_dashboards {
     width:100%;
     display:flex;
