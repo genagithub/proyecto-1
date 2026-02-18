@@ -79,7 +79,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body",className="e1_body",children=[
-html.H1("Análisis predictivo de rotación de personal",id="title",className="e1_title",href="https://github.com/genagithub/proyecto-1/blob/main/an%C3%A1lisis_predictivo_de_rotaci%C3%B3n_de_personal.ipynb",target="_blank"),
+html.A(href="https://github.com/genagithub/proyecto-1/blob/main/an%C3%A1lisis_predictivo_de_rotaci%C3%B3n_de_personal.ipynb",target="_blank",children=[html.H1("Análisis predictivo de rotación de personal",id="title",className="e1_title")]),
 html.Div(className="e1_dashboards",children=[
     html.Div(id="graph_div_1",className="e1_graph_div",children=[
         html.Div(id="dropdown_div_1",className="e1_dropdown_div",children=[
@@ -169,6 +169,7 @@ def update_graph(slct_var_cat,slct_var_num):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
     app.run_server(host='0.0.0.0', port=port)
+
 
 
 
