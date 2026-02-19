@@ -121,7 +121,7 @@ html.Div(className="e1_dashboards",children=[
             html.P(f"{round(real_not_leave_percentage)}% permanece | {round(real_leave_percentage)}% sale", className="e1_real_class")
         ]),
         html.Div(id="metrics", className="e1_metrics", children=[
-                html.P("Matriz de confusión", style={"font-size":"0.92em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"2px"}),
+                html.P("Matriz de confusión", style={"font-size":"0.92em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"6px"}),
                 html.Div(id="matrix", className="e1_matrix", children=[
                 html.Div([html.B(TP,style={"color":"green","font-family":"sans-serif"})],id="TP",className="e1_successes"), 
                 html.Div([html.B(FP,style={"color":"red","font-family":"sans-serif"})],id="FP",className="e1_mistakes"),
@@ -169,6 +169,7 @@ def update_graph(slct_var_cat,slct_var_num):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
     app.run_server(host='0.0.0.0', port=port)
+
 
 
 
