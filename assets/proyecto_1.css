@@ -15,6 +15,7 @@ a {
     margin-bottom: 50px;
     text-align:center;
     font-family:"no-roboto", sans-serif;    
+    font-size: 2em;
 }
 .e1_title:hover{
     cursor:pointer;
