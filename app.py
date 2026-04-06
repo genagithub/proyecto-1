@@ -149,15 +149,25 @@ html.Div(className="e1_dashboards",children=[
     Input(component_id="dropdown_2",component_property="value")]
 )
 
-def update_graph(slct_var_cat,slct_var_num):
+def update_graph(slct_var_cat, slct_var_num):
     
-    df["JoiningYear"] = df["JoiningYear"].astype(str)
-    df_percentage = df.groupby(slct_var_cat)["LeaveOrNot"].mean().reset_index()
-    df_percentage["LeaveOrNot"] = round(df_percentage["LeaveOrNot"] * 100)
-    df_percentage["LeaveOrNot"] = df_percentage["LeaveOrNot"].astype(str)
-    df_percentage["var_percentage"] = df_percentage[slct_var_cat].astype(str)+"("+df_percentage["LeaveOrNot"]+"%)"
-    
-    piechart = px.pie(df_percentage, values="LeaveOrNot", names="var_percentage", title="Probabilidad de salida")
+    df_stats = df.groupby(slct_var_cat).agg(exit_probability=("LeaveOrNot", "mean"), sample_size=("LeaveOrNot", "count")).reset_index()
+    df_stats["probability_pct"] = (df_stats["exit_probability"] * 100).round(1)
+    df_stats["display_label"] = (df_stats[slct_var_cat].astype(str) + " (n=" + df_stats["sample_size"].astype(str) + ")")
+
+    bar_chart = px.bar(
+        df_stats,
+        x="display_label",
+        y="probability_pct",
+        text="probability_pct",
+        title=f"Riesgo de salida",
+        labels={"probability_pct": "Probabilidad de Salida (%)", "display_label": slct_var_cat},
+        color="probability_pct",
+        color_continuous_scale="Reds"
+    )
+
+    bar_chart.update_traces(texttemplate="%{text}%", textposition="outside")
+    bar_chart.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
     
     df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
     
