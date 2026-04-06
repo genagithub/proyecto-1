@@ -176,7 +176,7 @@ def update_graph(slct_var_cat, slct_var_num):
         x="LeaveOrNot_txt", 
         y=slct_var_num,
         text=slct_var_num, 
-        title="Comapración de medias",
+        title="Comparación de medias",
         color="LeaveOrNot_txt",
         color_discrete_sequence=px.colors.qualitative.Safe
     )
