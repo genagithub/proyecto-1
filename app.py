@@ -182,7 +182,7 @@ def update_graph(slct_var_cat, slct_var_num):
     )
     
     mean_comparison_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
-    mean_comparison_bar.update_layout(xaxis_title=" ", yaxis_title=" ",   yaxis_range=[0, 35], showlegend=False, margin=dict(t=50, l=25, r=25, b=25))
+    mean_comparison_bar.update_layout(xaxis_title="Employee Status", yaxis_title=" ",   yaxis_range=[0, 35], showlegend=False, margin=dict(t=50, l=25, r=25, b=25))
     
     return exist_risk_bar, mean_comparison_bar
 
