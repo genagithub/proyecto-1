@@ -155,7 +155,7 @@ def update_graph(slct_var_cat, slct_var_num):
     df_stats["probability_pct"] = (df_stats["exit_probability"] * 100).round(1)
     df_stats["display_label"] = (df_stats[slct_var_cat].astype(str) + " (n=" + df_stats["sample_size"].astype(str) + ")")
 
-    bar_chart = px.bar(
+    exist_risk_bar = px.bar(
         df_stats,
         x="display_label",
         y="probability_pct",
@@ -166,15 +166,25 @@ def update_graph(slct_var_cat, slct_var_num):
         color_continuous_scale="Reds"
     )
 
-    bar_chart.update_traces(texttemplate="%{text}%", textposition="outside")
-    bar_chart.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
+    exist_risk_bar.update_traces(texttemplate="%{text}%", textposition="outside")
+    exist_risk_bar.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
     
     df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
     
-    barplot = px.bar(df_mean, x="LeaveOrNot_txt", y=slct_var_num, title="Medias estadísticas")
-    barplot.update_layout(xaxis_title=" ", yaxis_title=" ")
+    numeric_comparison_bar = px.bar(
+        df_mean, 
+        x="LeaveOrNot_txt", 
+        y=slct_var_num,
+        text=slct_var_num, 
+        title=f"Comapración de medias",
+        color="LeaveOrNot_txt",
+        color_discrete_sequence=px.colors.qualitative.Safe
+    )
     
-    return bar_chart, barplot
+    numeric_comparison_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+    numeric_comparison_bar.update_layout(xaxis_title=" ", yaxis_title=f" ", showlegend=False)
+    
+    return exist_risk_bar, numeric_comparison
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
