@@ -174,7 +174,7 @@ def update_graph(slct_var_cat, slct_var_num):
     barplot = px.bar(df_mean, x="LeaveOrNot_txt", y=slct_var_num, title="Medias estadísticas")
     barplot.update_layout(xaxis_title=" ", yaxis_title=" ")
     
-    return piechart, barplot
+    return bar_chart, barplot
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
