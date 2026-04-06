@@ -160,7 +160,7 @@ def update_graph(slct_var_cat, slct_var_num):
         x="display_label",
         y="probability_pct",
         text="probability_pct",
-        title=f"Riesgo de salida",
+        title="Riesgo de salida",
         labels={"probability_pct": "Probabilidad de Salida (%)", "display_label": slct_var_cat},
         color="probability_pct",
         color_continuous_scale="Reds"
@@ -171,20 +171,20 @@ def update_graph(slct_var_cat, slct_var_num):
     
     df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
     
-    numeric_comparison_bar = px.bar(
+    mean_comparison_bar = px.bar(
         df_mean, 
         x="LeaveOrNot_txt", 
         y=slct_var_num,
         text=slct_var_num, 
-        title=f"Comapración de medias",
+        title="Comapración de medias",
         color="LeaveOrNot_txt",
         color_discrete_sequence=px.colors.qualitative.Safe
     )
     
-    numeric_comparison_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
-    numeric_comparison_bar.update_layout(xaxis_title=" ", yaxis_title=f" ", showlegend=False)
+    mean_comparison_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+    mean_comparison_bar.update_layout(xaxis_title=" ", yaxis_title=" ", showlegend=False)
     
-    return exist_risk_bar, numeric_comparison
+    return exist_risk_bar, mean_comparison_bar
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
