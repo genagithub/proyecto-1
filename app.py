@@ -167,7 +167,7 @@ def update_graph(slct_var_cat, slct_var_num):
     )
 
     exist_risk_bar.update_traces(texttemplate="%{text}%", textposition="outside")
-    exist_risk_bar.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
+    exist_risk_bar.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], yaxis_title="Employee Churn", coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
     
     df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
     
