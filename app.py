@@ -5,28 +5,32 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OrdinalEncoder 
+from sklearn.preprocessing import OrdinalEncoder
 from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score, f1_score
 from sklearn import tree
 
 
 df  = pd.read_csv("data/employee.csv")
-
 df_encoded = df.copy()
-df_encoded[["Education","City","Gender","EverBenched"]] = OrdinalEncoder().fit_transform(df[["Education","City","Gender","EverBenched"]])
 
-map = {
-    0:"permanece",
-    1:"sale"
-}
+target = "LeaveOrNot"
+city_var = ["City"]
+ordinal_vars = ["Education", "Gender", "EverBenched"]
 
+df_encoded = pd.get_dummies(df, columns=city_var, prefix="City")
+df_encoded[ordinal_vars] = OrdinalEncoder().fit_transform(df[ordinal_vars])
+
+map = {0:"permanece", 1:"sale"}
 df["LeaveOrNot_txt"] = df["LeaveOrNot"].apply(lambda x : map.get(x))
 
+cols_no_target = [c for c in df.columns if c not in [target, "LeaveOrNot_txt"]]
+X_train_columns = cols_no_target 
+df_final = df[cols_no_target + [target]]
 
-x_train, x_test, y_train, y_test = train_test_split(
-                                                   df_encoded[df_encoded.columns[:-1]],
-                                                   df_encoded["LeaveOrNot"], 
-                                                   test_size=0.25)
+x_train, x_test, y_train, y_test = train_test_split(df_final[cols_no_target],
+                                                   df_final[target], 
+                                                   test_size=0.25
+                                                   random_state=42)
 
 tree_decision_clf = tree.DecisionTreeClassifier(criterion="entropy",
                                            max_depth=6, 
