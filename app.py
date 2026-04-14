@@ -15,7 +15,7 @@ df_encoded = df.copy()
 
 target = "LeaveOrNot"
 city_var = ["City"]
-ordinal_vars = ["Education", "Gender", "EverBenched"]
+ordinal_vars = ["Education", "Gender", "EverBenched", "Age", "PaymentTier", "ExperienceInCurrentDomain", "JoiningYear"]
 
 df_encoded = pd.get_dummies(df, columns=city_var, prefix="City")
 df_encoded[ordinal_vars] = OrdinalEncoder().fit_transform(df[ordinal_vars])
