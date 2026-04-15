@@ -11,7 +11,6 @@ from sklearn import tree
 
 
 df  = pd.read_csv("data/employee.csv")
-df_encoded = df.copy()
 
 target = "LeaveOrNot"
 city_var = ["City"]
