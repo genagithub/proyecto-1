@@ -6,7 +6,7 @@ La pérdida de empleados genera altos costos de contratación y frena la product
 
 ---
 
-#### 💡 Hallazgos Clave (¿Por qué se va el talento?)
+#### 💡 Hallazgos Clave de la Investigación (¿Por qué se va el talento?)
 
 A pesar de lo que se suele pensar, el salario no es el motivo de la renuncia en esta organización. Las medias de pago y experiencia son idénticas entre los empleados que se quedan y los que se van. Los verdaderos puntos críticos son:
 - **Fuga de Talento Especializado:** El 48% de los empleados con Maestría (Master) renuncia. Esto duplica la baja de los perfiles con Doctorado (PHD, 25%). Falta una ruta de crecimiento para ellos.
