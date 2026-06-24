@@ -1,7 +1,7 @@
-### 📊 Predicción de Rotación de Personal y Fuga de Talento en RRHH
+### 📊 Predicción de Rotación de Personal y Fuga de Talento 
 
 #### 🎯 El Problema de Negocio
-La pérdida de empleados genera altos costos de contratación y frena la productividad. La empresa necesita identificar qué sectores y perfiles tienen mayor riesgo de abandonar la organización para activar planes de retención antes de que renuncien.
+La pérdida de empleados le estás generando altos costos de contratación y frena la productividad. El equipo de RRHH necesita identificar de forma analítica qué sectores y perfiles tienen mayor riesgo de abandonar la organización para activar planes de retención antes de que renuncien.
 
 ---
 
