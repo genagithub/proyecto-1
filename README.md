@@ -23,7 +23,7 @@ El sistema cuenta con un enfoque de alta confianza para evitar falsas alarmas:
 - **Exactitud (Accuracy):** 83% ── El rendimiento general del clasificador es sólido y equilibrado.
 - **Balance (F1-Score):** 75% ── Valida que el modelo es confiable para la toma de decisiones.
 
-⚠️ **Nota Técnica sobre el Sesgo:** El modelo tiene un Recall de 67%. Esto ocurre porque variables numéricas como la Edad o el Pago son idénticas en ambos grupos ("invisibles" para el algoritmo). Por ende, el modelo se apoya en patrones categóricos y es conservador: prioriza la precisión sobre la cobertura total.
+⚠️ **Nota Técnica sobre el Sesgo:** El modelo tiene un Recall ~ 70%, esto ocurre porque variables numéricas como la Edad o el Pago son idénticas en ambos grupos ("invisibles" para el algoritmo). Por ende, el modelo se apoya en patrones categóricos y es conservador: prioriza la precisión sobre la cobertura total.
 
 ---
 
