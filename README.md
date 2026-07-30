@@ -1,7 +1,7 @@
 ### 📊 Predicción de Rotación de Personal y Fuga de Talento 
 
 #### 🎯 El Contexto del Problema 
-La pérdida de empleados le estás generando altos costos de contratación y frena la productividad. Actualmente, el equipo de RRHH carece de una herramienta predictiva, utilizando como línea de base la intuición interna o reglas fijas basadas únicamente en la antigüedad o el nivel salarial, por lo que necesita identificar de forma analítica qué sectores y perfiles tienen mayor riesgo de abandonar la organización para para la activación de planes de retención proactivos antes de que se formalice la renuncia.
+La pérdida de empleados le estás generando altos costos de contratación y frena la productividad. Actualmente, el equipo de RRHH carece de una herramienta predictiva, utilizando como baseline la intuición interna o reglas fijas basadas únicamente en la antigüedad o el nivel salarial, por lo que necesita identificar de forma analítica qué sectores y perfiles tienen mayor riesgo de abandonar la organización para para la activación de planes de retención proactivos antes de que se formalice la renuncia.
 
 ---
 
