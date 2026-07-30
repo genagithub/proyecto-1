@@ -1,11 +1,11 @@
 ### 📊 Predicción de Rotación de Personal y Fuga de Talento 
 
 #### 🎯 El Contexto del Problema 
-La pérdida de empleados le estás generando altos costos de contratación y frena la productividad. El equipo de RRHH necesita identificar de forma analítica qué sectores y perfiles tienen mayor riesgo de abandonar la organización para activar planes de retención antes de que renuncien.
+La pérdida de empleados le estás generando altos costos de contratación y frena la productividad. Actualmente, el equipo de RRHH carece de una herramienta predictiva, utilizando como línea de base la intuición interna o reglas fijas basadas únicamente en la antigüedad o el nivel salarial, por lo que necesita identificar de forma analítica qué sectores y perfiles tienen mayor riesgo de abandonar la organización para para la activación de planes de retención proactivos antes de que se formalice la renuncia.
 
 ---
 
-#### 💡 Hallazgos Clave de la Investigación (¿Por qué se va el talento?)
+#### 💡 Hallazgos Clave de la Investigación (Perfiles Sensibles)
 A pesar de lo que se suele pensar, el salario no es el motivo de la renuncia en esta organización. Las medias de pago y experiencia son idénticas entre los empleados que se quedan y los que se van. Los verdaderos puntos críticos son:
 - **Fuga de Talento Especializado:** El 48% de los empleados con Maestría (Master) renuncia. Esto duplica la baja de los perfiles con Doctorado (PHD, 25%). Falta una ruta de crecimiento para ellos.
 - **Alerta de Género:** El riesgo de salida en mujeres (47%) casi duplica al de los hombres (26%). Existe un problema urgente en el clima laboral o el balance vida-trabajo.
