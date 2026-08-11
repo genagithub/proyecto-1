@@ -124,6 +124,7 @@ cart_model = DecisionTreeClassifier(criterion="entropy",
 
 cart_model.fit(X_train, y_train)
 
+y_pred = cart_model.predict(X_test)
 probabilities = cart_model.predict_proba(X_test)
 
 analysis_roi = X_test.copy()
