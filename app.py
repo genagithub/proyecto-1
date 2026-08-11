@@ -190,7 +190,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         dcc.Graph(id="scatterplot", className="e1_graph", figure={})
     ]),
 ]),
-   html.H2("Optimización presupuestaria", id"H2", className="e1_title"),  
+   html.H2("Optimización presupuestaria", id="H2", className="e1_title"),  
    html.Div(id="insights", className="e1_insights", children=[
        html.Div(f"Total de clientes detectados en riesgo por el modelo: {total_customers_predicted_risk}", id="total_customers", className="e1_txt"),
        html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
