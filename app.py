@@ -132,7 +132,6 @@ analysis_roi["RealTarget"] = y_test
 analysis_roi["ModelPredict"] = y_pred
 analysis_roi["MidProb"] = probabilities[:, 1]
 analysis_roi["HighProb"] = probabilities[:, 2]
-
 analysis_roi["TotalRiskProb"] = analysis_roi["MidProb"] + analysis_roi["HighProb"]
 
 CAMPAIGN_COST = 15.0      
@@ -144,6 +143,8 @@ analysis_roi["CampaignPrescription"] = np.where(analysis_roi["VEN"] > 0, "APROBA
 total_customers_predicted_risk = (analysis_roi["ModelPredict"].isin([1, 2])).sum()
 approved_campaigns = (analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña").sum()
 budget_savings = (total_customers_predicted_risk  - approved_campaigns) * CAMPAIGN_COST
+
+top_5_customers = analysis_roi[analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña"].sort_values(by="VEN", ascending=False).head(5)
 
 app = dash.Dash(__name__)
 server = app.server
@@ -198,10 +199,18 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
        html.Div(f"Dinero directo RESCATADO / AHORRADO en presupuesto publicitario: ${budget_savings}", id="ROI", className="e1_txt"),
        html.H3("Top 5 clientes a fidelizar", id="H3", style={"font-family":"sans-serif","font-weight":"bold"}),
        html.Div(id="matrix", className="e1_matrix", children=[
-            html.Div([html.B("ID", className="e1_col")], id="col_1"),
-            html.Div([html.B("Gasto total", className="e1_col")], id="col_2"),
-            html.Div([html.B("Probabilidad de Churn", className="e1_col")], id="col_3"),
-            html.Div([html.B("Valor Esperado Neto", className="e1_col")], id="col_4")
+            html.Div([html.B("ID", className="e1_header")], id="col_1"),
+            html.Div([html.B("Gasto total", className="e1_header")], id="col_2"),
+            html.Div([html.B("Probabilidad de Churn", className="e1_header")], id="col_3"),
+            html.Div([html.B("Valor Esperado Neto", className="e1_header")], id="col_4"),
+            *sum([
+                [
+                    html.Div(str(row["CustomerID"]), className="e1_cell"),
+                    html.Div(f"${row["TotalExpenditure"]:,.2f}", className="e1_cell"),
+                    html.Div(f"{row["HighProb"]:.2%}", className="e1_cell"),
+                    html.Div(f"${row["VEN"]:,.2f}", className="e1_cell")
+                ] for _, row in top_5_customers.iterrows()
+            ], [])
        ])
   ])
 ])
