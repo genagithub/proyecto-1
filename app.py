@@ -234,7 +234,7 @@ def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
         nbins=30,
         title=f"Distribución de clientes por {slct_var_histogram} y nivel de riesgo",
         color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"}, 
-        labels={"Target": "Estado de Riesgo"}
+        labels={"Target": "Estado de riesgo"}
     )
     
     histogram.update_layout(
@@ -263,8 +263,8 @@ def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
     
     scatterplot.update_layout(
         template="plotly_white",
-        xaxis_title=slct_X,
-        yaxis_title=slct_Y,
+        xaxis_title=slct_var_X,
+        yaxis_title=slct_var_Y,
         coloraxis_colorbar=dict(title="Probabilidad<br>de Churn")
     )
 
