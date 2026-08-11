@@ -224,7 +224,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
     Input(component_id="dropdown_3",component_property="value")]
 )
 
-def update_dashboard(slct_var_histogram, slct_X, slct_Y):
+def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
 
     histogram = px.histogram(
         df_model, 
@@ -246,12 +246,19 @@ def update_dashboard(slct_var_histogram, slct_X, slct_Y):
 
     scatterplot = px.scatter(
         df_model, 
-        x=slct_X, 
-        y=slct_Y,
+        x=slct_var_X, 
+        y=slct_var_Y,
         color="HighProb", 
         color_continuous_scale=px.colors.sequential.Reds, 
-        title=f"Correlación: {slct_X} vs {slct_Y} (mapeo de probabilidad de Churn)",
-        hover_data=["TotalExpensive", "FrecuencyHist"]
+        title=f"Correlación: {slct_var_X} vs {slct_var_Y} (mapeo de probabilidad de Churn)",
+        hover_data={
+            slct_var_X: True,
+            slct_var_Y: True,
+            "HighProb": ":.2%",
+            "TotalExpenditure": True,
+            "FrecuencyHist": True,
+            "CustomerID": True
+        }
     )
     
     scatterplot.update_layout(
