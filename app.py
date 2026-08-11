@@ -199,9 +199,9 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
        html.H3("Top 5 clientes a fidelizar", id="H3", className="e1_title"),
        html.Div(id="matrix", className="e1_matrix", children=[
             html.Div([html.B("ID", className="e1_col")], id="col_1"),
-            html.Div([html.B("Gasto promedio", className="e1_col")], id="col_2"),
-            html.Div([html.B("Churn Valor-P", className="e1_col")], id="col_3"),
-            html.Div([html.B("Ganancia recuperada", className="e1_col")], id="col_4")
+            html.Div([html.B("Gasto total", className="e1_col")], id="col_2"),
+            html.Div([html.B("Probabilidad de Churn", className="e1_col")], id="col_3"),
+            html.Div([html.B("Valor Esperado Neto", className="e1_col")], id="col_4")
        ])
   ])
 ])
