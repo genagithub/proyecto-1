@@ -155,9 +155,10 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         html.Div(id="dropdown_div_1", className="e1_dropdown_div", children=[
             dcc.Dropdown(id="dropdown_1", className="e1_dropdown",
                         options = [
-                            {"label":"gasto total","value":"TotalExpenditure"},
-                            {"label":"frecuencia historica","value":"FrecuencyHist"},
-                            {"label":"diversidad de SKUs","value":"DiversitySKUs"}
+                            {"label":"Gasto total","value":"TotalExpenditure"},
+                            {"label":"Frecuencia histórica","value":"FrecuencyHist"},
+                            {"label":"Tasa de cancelaciones","value":"CancellationsRate"},
+                            {"label":"TBT promedio","value":"AverageTBT"}
                         ],
                         value="TotalExpenditure",
                         multi=False,
@@ -169,18 +170,18 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         html.Div(id="dropdown_div_2", className="e1_dropdown_div",children=[
             dcc.Dropdown(id="dropdown_2", className="e1_dropdown",
                         options = [
-                            {"label":"gasto total","value":"TotalExpenditure"}, 
-                            {"label":"ticket promedio","value":"TicketAverage"}, 
-                            {"label":"varianca de gasto","value":"ExpenditureVariance"}
+                            {"label":"Recencia","value":"RecencyObs"}, 
+                            {"label":"Ritmo excedido","value":"ExcessivePace"}, 
+                            {"label":"TBT promedio","value":"AverageTBT"}
                         ],
-                        value="TotalExpenditure",
+                        value="RecencyObs",
                         multi=False,
                         clearable=False),
             dcc.Dropdown(id="dropdown_3", className="e1_dropdown",
                         options = [
-                            {"label":"gasto total","value":"TotalExpenditure"},
-                            {"label":"ticket promedio","value":"TicketAverage"}, 
-                            {"label":"varianca de gasto","value":"ExpenditureVariance"}
+                            {"label":"Gasto total","value":"TotalExpenditure"},
+                            {"label":"Ticket promedio","value":"AverageTicket"}, 
+                            {"label":"Cantidades totales","value":"TotalQuantities"}
                         ],
                         value="TotalExpenditure",
                         multi=False,
