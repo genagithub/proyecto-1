@@ -49,7 +49,6 @@ def assign_class(recency):
         return 2  
 
 target_df["Target"] = target_df["RecencyTarget"].apply(assign_class)
-
 features_df = pd.DataFrame({"CustomerID": df_obs["CustomerID"].unique()})
 
 finances = df_obs.groupby("CustomerID").agg(
@@ -79,7 +78,6 @@ date_cut_obs = df_obs["InvoiceDate"].max()
 recency_obs = df_obs.groupby("CustomerID")["InvoiceDate"].max().reset_index()
 recency_obs["RecencyObs"] = (date_cut_obs - recency_obs["InvoiceDate"]).dt.days
 features_df = pd.merge(features_df, recency_obs[["CustomerID", "RecencyObs"]], on="CustomerID", how="left")
-
 
 buys_date = df_obs.groupby(["CustomerID", "InvoiceNo"])["InvoiceDate"].min().reset_index()
 buys_date = buys_date.sort_values(by=["CustomerID", "InvoiceDate"])
@@ -133,6 +131,7 @@ analysis_roi["ModelPredict"] = y_pred
 analysis_roi["MidProb"] = probabilities[:, 1]
 analysis_roi["HighProb"] = probabilities[:, 2]
 analysis_roi["TotalRiskProb"] = analysis_roi["MidProb"] + analysis_roi["HighProb"]
+analysis_roi["CustomerID"] = df_model.loc[X_test.index, "CustomerID"]
 
 CAMPAIGN_COST = 15.0      
 CAMPAIGN_EFFECTIVENESS = 0.30 
