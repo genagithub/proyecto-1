@@ -124,10 +124,25 @@ cart_model = DecisionTreeClassifier(criterion="entropy",
 
 cart_model.fit(X_train, y_train)
 
-y_pred = cart_model.predict(X_test)
-y_pred_prob = cart_model.predict_proba(X_test)
+probabilities = cart_model.predict_proba(X_test)
 
-df_model["PredictProbability"] = y_pred_prob
+analysis_roi = X_test.copy()
+analysis_roi["RealTarget"] = y_test
+analysis_roi["ModelPredict"] = y_pred
+analysis_roi["MidProb"] = probabilities[:, 1]
+analysis_roi["HighProb"] = probabilities[:, 2]
+
+analysis_roi["TotalRiskProb"] = analysis_roi["MidProb"] + analysis_roi["HighProb"]
+
+CAMPAIGN_COST = 15.0      
+CAMPAIGN_EFFECTIVENESS = 0.30 
+
+analysis_roi["VEN"] = (analysis_roi["TotalExpenditure"] * analysis_roi["TotalRiskProb"] * CAMPAIGN_EFFECTIVENESS) - CAMPAIGN_COST
+analisis_roi["CampaignPrescription"] = np.where(analysis_roi["VEN"] > 0, "APROBADO: Desplegar campaña", "RECHAZADO: No invertir")
+
+total_customers_predicted_risk = (analysis_roi["ModelPredict"].isin([1, 2])).sum()
+approved_campaigns = (analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña").sum()
+budget_savings = (total_customers_predicted_risk  - approved_campaigns) * CAMPAIGN_COST
 
 app = dash.Dash(__name__)
 server = app.server
@@ -221,7 +236,7 @@ def update_dashboard(slct_var_histogram, slct_X, slct_Y):
         df_model, 
         x=slct_X, 
         y=slct_Y,
-        color="PredictProbability", 
+        color="HighProb", 
         color_continuous_scale=px.colors.sequential.Reds, 
         title=f"Correlación: {slct_X} vs {slct_Y} (mapeo de probabilidad de Churn)",
         hover_data=["TotalExpensive", "FrecuencyHist"]
