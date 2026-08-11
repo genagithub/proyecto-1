@@ -148,7 +148,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body", className="e1_body", children=[
-html.H1("Análisis predictivo de Churn en ventas", id="title", className="e1_title"),
+html.H1("Análisis prescriptivo de Churn Rate", id="title", className="e1_title"),
 html.Div(id="dashboard", className="e1_dashboard", children=[
     html.Div(id="graph_div_1", className="e1_graph_div", children=[
         html.Div(id="dropdown_div_1", className="e1_dropdown_div", children=[
