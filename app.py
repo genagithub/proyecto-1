@@ -138,7 +138,7 @@ CAMPAIGN_COST = 15.0
 CAMPAIGN_EFFECTIVENESS = 0.30 
 
 analysis_roi["VEN"] = (analysis_roi["TotalExpenditure"] * analysis_roi["TotalRiskProb"] * CAMPAIGN_EFFECTIVENESS) - CAMPAIGN_COST
-analisis_roi["CampaignPrescription"] = np.where(analysis_roi["VEN"] > 0, "APROBADO: Desplegar campaña", "RECHAZADO: No invertir")
+analysis_roi["CampaignPrescription"] = np.where(analysis_roi["VEN"] > 0, "APROBADO: Desplegar campaña", "RECHAZADO: No invertir")
 
 total_customers_predicted_risk = (analysis_roi["ModelPredict"].isin([1, 2])).sum()
 approved_campaigns = (analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña").sum()
@@ -189,11 +189,11 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
     ]),
 ]),
    html.Div(id="insights", className="e1_insights", children=[
-       html.Div("Total de clientes detectados en riesgo por el modelo:", id="total_customers", className="e1_txt"),
-       html.Div("Campañas de pago estratégicamente APROBADAS por ROI:", id="aprove_campaigns", className="e1_txt"),
-       html.Div("Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito):", id="reject_campagins", className="e1_txt"),
-       html.Div("Dinero directo RESCATADO / AHORRADO en presupuesto publicitario:", id="ROI", className="e1_txt"),
-       html.H2("Top 5 clientes a fidelizar", style={"font-size":"0.9em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"15px"}),
+       html.Div(f"Total de clientes detectados en riesgo por el modelo: {total_customers_predicted_risk}", id="total_customers", className="e1_txt"),
+       html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
+       html.Div(f"Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito):", id="reject_campagins", className="e1_txt"),
+       html.Div(f"Dinero directo RESCATADO / AHORRADO en presupuesto publicitario: {budget_savings}", id="ROI", className="e1_txt"),
+       html.H2("Top 5 clientes a fidelizar", id="H2", style={"font-size":"0.9em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"15px"}),
        html.Div(id="matrix", className="e1_matrix", children=[
             html.Div([html.B("ID", className="e1_col")], id="col_1"),
             html.Div([html.B("Gasto promedio", className="e1_col")], id="col_2"),
