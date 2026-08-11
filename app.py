@@ -190,12 +190,13 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         dcc.Graph(id="scatterplot", className="e1_graph", figure={})
     ]),
 ]),
+   html.H2("Optimización presupuestaria", id"H2", className="e1_title"),  
    html.Div(id="insights", className="e1_insights", children=[
        html.Div(f"Total de clientes detectados en riesgo por el modelo: {total_customers_predicted_risk}", id="total_customers", className="e1_txt"),
        html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
        html.Div(f"Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito):", id="reject_campagins", className="e1_txt"),
        html.Div(f"Dinero directo RESCATADO / AHORRADO en presupuesto publicitario: {budget_savings}", id="ROI", className="e1_txt"),
-       html.H2("Top 5 clientes a fidelizar", id="H2", style={"font-size":"0.9em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"15px"}),
+       html.H3("Top 5 clientes a fidelizar", id="H3", className="e1_title"),
        html.Div(id="matrix", className="e1_matrix", children=[
             html.Div([html.B("ID", className="e1_col")], id="col_1"),
             html.Div([html.B("Gasto promedio", className="e1_col")], id="col_2"),
