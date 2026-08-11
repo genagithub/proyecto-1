@@ -1,209 +1,229 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import numpy as np
 import plotly.express as px
 import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
-from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score, f1_score
-from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 
 
-df  = pd.read_csv("data/employee.csv")
+df  = pd.read_csv("data/customer_invoices.zip", encoding="ISO-8859-1")
 
-target = "LeaveOrNot"
-city_var = ["City"]
-ordinal_vars = ["Education", "Gender", "EverBenched"]
+df = df.dropna(subset=["Description", "CustomerID"])
+df["CustomerID"] = df["CustomerID"].astype(int)
+df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
+df["Revenue"] = df["Quantity"] * df["UnitPrice"]
 
-df_encoded = pd.get_dummies(df, columns=city_var, prefix="City")
-df_encoded[ordinal_vars] = OrdinalEncoder().fit_transform(df[ordinal_vars])
+date_cut = pd.to_datetime("2011-09-01")
 
-map = {0:"permanece", 1:"sale"}
-df["LeaveOrNot_txt"] = df["LeaveOrNot"].apply(lambda x : map.get(x))
+df_obs = df[df["InvoiceDate"] < date_cut].copy()
+df_pred = df[df["InvoiceDate"] >= date_cut].copy()
 
-cols_no_target = [c for c in df.columns if c not in [target, "LeaveOrNot_txt"]]
-X_train_columns = cols_no_target 
-df_final = df[cols_no_target + [target]]
+max_date = df["InvoiceDate"].max()
 
-x_train, x_test, y_train, y_test = train_test_split(df_final[cols_no_target],
-                                                   df_final[target], 
-                                                   test_size=0.25
-                                                   random_state=42)
+last_contact = df_pred.groupby("CustomerID")["InvoiceDate"].max().reset_index()
+last_contact.columns = ["CustomerID", "LastDatePred"]
+last_contact["RecencyTarget"] = (max_date - last_contact["LastDatePred"]).dt.days
 
-tree_decision_clf = tree.DecisionTreeClassifier(criterion="entropy",
-                                           max_depth=6, 
-                                           min_samples_split=6, 
-                                           min_samples_leaf=5, 
-                                           ccp_alpha=0.003)  
+customers_to_retain = pd.DataFrame({"CustomerID": df_obs["CustomerID"].unique()})
 
-model = tree_decision_clf.fit(x_train, y_train)
+target_df = pd.merge(customers_to_retain, last_contact, on="CustomerID", how="left")
 
-class_predicts = model.predict(x_test)
-class_real = y_test.values
+last_date_obs = df_obs.groupby("CustomerID")["InvoiceDate"].max().reset_index()
+last_date_obs.columns = ["CustomerID", "LastDateObs"]
+target_df = pd.merge(target_df, last_date_obs, on="CustomerID", how="left")
 
-matrix_confusion = confusion_matrix(class_real,class_predicts)
-TP = matrix_confusion[0,0]
-FP = matrix_confusion[0,1]
-FN = matrix_confusion[1,0]
-TN = matrix_confusion[1,1]
+target_df["RecencyTarget"] = target_df["RecencyTarget"].fillna((max_date - target_df["LastDateObs"]).dt.days)
 
-accuracy = accuracy_score(class_real, class_predicts)
-color_accuracy = "green"
-if accuracy < 0.6:
-    color_accuracy = "red"
-accuracy_str = str(accuracy)
+p75 = target_df["RecencyTarget"].quantile(0.75)
+p90 = target_df["RecencyTarget"].quantile(0.90)
 
-recall = recall_score(class_real, class_predicts)
-color_recall = "green"
-if recall < 0.6:
-    color_recall = "red"
-recall_str = str(recall)
+def assign_class(recency):
+    if recency <= p75:
+        return 0  
+    elif recency <= p90:
+        return 1  
+    else:
+        return 2  
 
-precision = precision_score(class_real, class_predicts)
-color_precision = "green"
-if precision < 0.6:
-    color_precision = "red"
-precision_str = str(precision)
+target_df["Target"] = target_df["RecencyTarget"].apply(assign_class)
 
-F1_score = f1_score(class_real, class_predicts)
-color_f1 = "green"
-if F1_score < 0.6:
-    color_f1 = "red"
-F1_score_str = str(F1_score)
+features_df = pd.DataFrame({"CustomerID": df_obs["CustomerID"].unique()})
 
-predict_leave_percentage = class_predicts.flatten().mean() * 100
-predict_not_leave_percentage = 100 - predict_leave_percentage
+finances = df_obs.groupby("CustomerID").agg(
+    TotalExpenditure=("Revenue", "sum"),
+    TicketAverage=("Revenue", "mean"),
+    ExpenditureVariance=("Revenue", "std"),
+    TotalQuantities=("Quantity", "sum")
+).reset_index()
 
-real_leave_percentage = class_real.flatten().mean() * 100
-real_not_leave_percentage = 100 - real_leave_percentage
+finances["ExpenditureVariance"] = finances["ExpenditureVariance"].fillna(0)
+features_df = pd.merge(features_df, finances, on="CustomerID", how="left")
+
+frecuency = df_obs.groupby("CustomerID")["InvoiceNo"].nunique().reset_index()
+frecuency.columns = ["CustomerID", "FrecuencyHist"]
+features_df = pd.merge(features_df, frecuency, on="CustomerID", how="left")
+
+skus = df_obs.groupby("CustomerID")["StockCode"].nunique().reset_index()
+skus.columns = ["CustomerID", "DiversitySKUs"]
+features_df = pd.merge(features_df, skus, on="CustomerID", how="left")
+
+df_obs["Cancellations"] = df_obs["InvoiceNo"].astype(str).str.startswith("C").astype(int)
+cancellations = df_obs.groupby("CustomerID")["Cancellations"].mean().reset_index()
+cancellations.columns = ["CustomerID", "CancellationsRate"]
+features_df = pd.merge(features_df, cancellations, on="CustomerID", how="left")
+
+date_cut_obs = df_obs["InvoiceDate"].max()
+recency_obs = df_obs.groupby("CustomerID")["InvoiceDate"].max().reset_index()
+recency_obs["RecencyObs"] = (date_cut_obs - recency_obs["InvoiceDate"]).dt.days
+features_df = pd.merge(features_df, recency_obs[["CustomerID", "RecencyObs"]], on="CustomerID", how="left")
+
+
+buys_date = df_obs.groupby(["CustomerID", "InvoiceNo"])["InvoiceDate"].min().reset_index()
+buys_date = buys_date.sort_values(by=["CustomerID", "InvoiceDate"])
+buys_date["DaysBetweenBuys"] = buys_date.groupby("CustomerID")["InvoiceDate"].diff().dt.days
+
+purchasing_pace = buys_date.groupby("CustomerID").agg(
+    AverageTBP=("DaysBetweenBuys", "mean"),
+    VarianceTBP=("DaysBetweenBuys", "var")
+).reset_index()
+
+purchasing_pace = pd.merge(purchasing_pace, features_df[["CustomerID", "RecencyObs"]], on="CustomerID", how="left")
+purchasing_pace["AverageTBP"] = purchasing_pace["AverageTBP"].fillna(purchasing_pace["RecencyObs"] + 1)
+purchasing_pace["VarianceTBP"] = purchasing_pace["VarianceTBP"].fillna(0)
+purchasing_pace["AverageTBP"] = purchasing_pace["AverageTBP"].replace(0, 0.5)
+
+features_df = pd.merge(features_df, purchasing_pace[["CustomerID", "AverageTBP", "VarianceTBP"]], on="CustomerID", how="left")
+features_df["ExcessivePace"] = features_df["RecencyObs"] / features_df["AverageTBP"]
+
+features_df["PurchasingStability"] = np.where(
+    features_df["AverageTBP"] > 0, 
+    np.sqrt(features_df["VarianceTBP"]) / features_df["AverageTBP"], 
+    0
+)
+
+geography = df_obs.groupby("CustomerID")["Country"].first().reset_index()
+geography["IsUK"] = (geography["Country"] == "United Kingdom").astype(int)
+features_df = pd.merge(features_df, geography[["CustomerID", "IsUK"]], on="CustomerID", how="left")
+
+df_model = pd.merge(features_df, target_df[["CustomerID", "Target"]], on="CustomerID", how="inner")
+
+cart_model = DecisionTreeClassifier(criterion="entropy",
+                                    max_depth=10,
+                                    min_samples_leaf=10,  
+                                    class_weight="balanced", 
+                                    random_state=42)
+
+cart_model.fit(df_model[df_model.columns[:-1]], df_model["Target"])
 
 app = dash.Dash(__name__)
 server = app.server
 
-app.layout = html.Div(id="body",className="e1_body",children=[
-html.A(href="https://github.com/genagithub/proyecto-1/blob/main/README.md",children=[html.H1("Análisis predictivo de rotación de personal",id="title",className="e1_title")]),
-html.Div(className="e1_dashboards",children=[
-    html.Div(id="graph_div_1",className="e1_graph_div",children=[
-        html.Div(id="dropdown_div_1",className="e1_dropdown_div",children=[
-            dcc.Dropdown(id="dropdown_1",className="e1_dropdown",
+app.layout = html.Div(id="body", className="e1_body", children=[
+html.H1("Análisis predictivo de Churn en ventas", id="title", className="e1_title"),
+html.Div(id="dashboard", className="e1_dashboard", children=[
+    html.Div(id="graph_div_1", className="e1_graph_div", children=[
+        html.Div(id="dropdown_div_1", className="e1_dropdown_div", children=[
+            dcc.Dropdown(id="dropdown_1", className="e1_dropdown",
                         options = [
-                            {"label":"Educación","value":"Education"},
-                            {"label":"Año de incorporación","value":"JoiningYear"},
-                            {"label":"Ciudad","value":"City"},
-                            {"label":"Género","value":"Gender"},
-                            {"label":"Siempre en banca","value":"EverBenched"}
+                            {"label":"gasto total","value":"TotalExpenditure"},
+                            {"label":"frecuencia historica","value":"FrecuencyHist"},
+                            {"label":"diversidad de SKUs","value":"DiversitySKUs"}
                         ],
-                        value="Education",
+                        value="TotalExpenditure",
                         multi=False,
                         clearable=False)
         ]),
-        dcc.Graph(id="piechart",className="e1_graph",figure={})
+        dcc.Graph(id="histogram", className="e1_graph", figure={})
     ]),
-    html.Div(id="graph_div_2",className="e1_graph_div",children=[
-        html.Div(id="dropdown_div_2",className="e1_dropdown_div",children=[
-            dcc.Dropdown(id="dropdown_2",className="e1_dropdown",
+    html.Div(id="graph_div_2", className="e1_graph_div", children=[
+        html.Div(id="dropdown_div_2", className="e1_dropdown_div",children=[
+            dcc.Dropdown(id="dropdown_2", className="e1_dropdown",
                         options = [
-                            {"label":"Edad","value":"Age"},
-                            {"label":"Nivel de pago","value":"PaymentTier"},
-                            {"label":"Experiencia en el dominio","value":"ExperienceInCurrentDomain"}
+                            {"label":"gasto total","value":"TotalExpenditure"}, 
+                            {"label":"ticket promedio","value":"TicketAverage"}, 
+                            {"label":"varianca de gasto","value":"ExpenditureVariance"}
                         ],
-                        value="Age",
+                        value="TotalExpenditure",
+                        multi=False,
+                        clearable=False),
+            dcc.Dropdown(id="dropdown_3", className="e1_dropdown",
+                        options = [
+                            {"label":"gasto total","value":"TotalExpenditure"},
+                            {"label":"ticket promedio","value":"TicketAverage"}, 
+                            {"label":"varianca de gasto","value":"ExpenditureVariance"}
+                        ],
+                        value="TotalExpenditure",
                         multi=False,
                         clearable=False)
         ]),
-        dcc.Graph(id="bar",className="e1_graph",figure={})
+        dcc.Graph(id="scatterplot", className="e1_graph", figure={})
     ]),
 ]),
-    
-    html.Div(className="e1_div", children=[
-        html.Div(id="performance", className="e1_performance",children=[
-            html.P([html.B("Clases reales", style={"color":"blue"}),"   vs.   ",html.B("Predicciones",style={"color":"red"})], style={"text-align":"center","font-family":"sans-serif"}),
-            html.P(f"{round(predict_not_leave_percentage)}% permanece | {round(predict_leave_percentage)}% sale", className="e1_predicts"),
-            html.P("-----------------------------------------------------------------",style={"margin":"0"}),
-            html.P(f"{round(real_not_leave_percentage)}% permanece | {round(real_leave_percentage)}% sale", className="e1_real_class")
-        ]),
-        html.Div(id="metrics", className="e1_metrics", children=[
-                html.P("Matriz de confusión", style={"font-size":"0.92em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"15px"}),
-                html.Div(id="matrix", className="e1_matrix", children=[
-                html.Div([html.B(TP,style={"color":"green","font-family":"sans-serif"})],id="TP",className="e1_successes"), 
-                html.Div([html.B(FP,style={"color":"red","font-family":"sans-serif"})],id="FP",className="e1_mistakes"),
-                html.Div([html.B(FN,style={"color":"red","font-family":"sans-serif"})],id="FN",className="e1_mistakes"),
-                html.Div([html.B(TN,style={"color":"green","font-family":"sans-serif"})],id="TN",className="e1_successes")
-                ]),
-                html.Div(id="scores",children=[
-                html.Ul(id="list",children=[
-                html.Li([f"Accuracy: ",html.B(accuracy_str[:4],style={"color":f"{color_accuracy}"})],id="accuracy",className="e1_score"),
-                html.Li([f"Recall: ",html.B(recall_str[:4],style={"color":f"{color_recall}"})],id="recall",className="e1_score"),
-                html.Li([f"Precision: ",html.B(precision_str[:4],style={"color":f"{color_precision}"})],id="precision",className="e1_score"),
-                html.Li([f"F1 Score: ",html.B(F1_score_str[:4],style={"color":f"{color_f1}"})],id="f1_score",className="e1_score")
-                ])
-                
-            ])
-        ])
-    ])
+   html.Div(id="insights", className="e1_insights", children=[
+       html.Div("Total de clientes detectados en riesgo por el modelo:", id="total_customers", className="e1_txt"),
+       html.Div("Campañas de pago estratégicamente APROBADAS por ROI:", id="aprove_campaigns", className="e1_txt"),
+       html.Div("Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito):", id="reject_campagins", className="e1_txt"),
+       html.Div("Dinero directo RESCATADO / AHORRADO en presupuesto publicitario:", id="ROI", className="e1_txt"),
+       html.H2("Top 5 clientes a fidelizar", style={"font-size":"0.9em","text-align":"center","font-family":"sans-serif","font-weigth":"bold","margin-top":"15px"}),
+       html.Div(id="matrix", className="e1_matrix", children=[
+            html.Div([html.B("ID", className="e1_col")], id="col_1"),
+            html.Div([html.B("Gasto promedio", className="e1_col")], id="col_2"),
+            html.Div([html.B("Churn Valor-P", className="e1_col")], id="col_3"),
+            html.Div([html.B("Ganancia recuperada", className="e1_col")], id="col_4")
+       ])
+  ])
 ])
 
 
 @app.callback(
-    [Output(component_id="piechart",component_property="figure"),
-    Output(component_id="bar",component_property="figure")],
+    [Output(component_id="histogram",component_property="figure"),
+    Output(component_id="scatterplot",component_property="figure")],
     [Input(component_id="dropdown_1",component_property="value"),
-    Input(component_id="dropdown_2",component_property="value")]
+    Input(component_id="dropdown_2",component_property="value"),
+    Input(component_id="dropdown_3",component_property="value")]
 )
 
-def update_graph(slct_var_cat, slct_var_num):
-    
-    df_stats = df.groupby(slct_var_cat).agg(exit_probability=("LeaveOrNot", "mean"), sample_size=("LeaveOrNot", "count")).reset_index()
-    df_stats["probability_pct"] = (df_stats["exit_probability"] * 100).round(1)
-    df_stats["display_label"] = (df_stats[slct_var_cat].astype(str) + " (n=" + df_stats["sample_size"].astype(str) + ")")
+def update_dashboard(slct_var_histogram, slct_X, slct_Y):
 
-    exist_risk_bar = px.bar(
-        df_stats,
-        x="display_label",
-        y="probability_pct",
-        text="probability_pct",
-        title="Riesgo de salida",
-        labels={"probability_pct": "Probabilidad de Salida (%)", "display_label": slct_var_cat},
-        color="probability_pct",
-        color_continuous_scale="Reds"
-    )
-
-    exist_risk_bar.update_traces(texttemplate="%{text}%", textposition="outside")
-    exist_risk_bar.update_layout(xaxis={"categoryorder": "total descending"}, yaxis_range=[0, 100], yaxis_title="Employee Churn", coloraxis_showscale=False, margin=dict(t=50, l=25, r=25, b=25))
-    
-    df_mean = df.groupby("LeaveOrNot_txt")[slct_var_num].mean().reset_index()
-    
-    mean_comparison_bar = px.bar(
-        df_mean, 
-        x="LeaveOrNot_txt", 
-        y=slct_var_num,
-        text=slct_var_num, 
-        title="Comparación de medias",
-        color="LeaveOrNot_txt",
-        color_discrete_sequence=px.colors.qualitative.Safe
+    histogram = px.histogram(
+        df_model, 
+        x=slct_var_histogram, 
+        color="Target", 
+        barmode="group",
+        nbins=30,
+        title=f"Distribución de clientes por {slct_var_histogram} y nivel de riesgo",
+        color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"}, 
+        labels={"Target": "Estado de Riesgo"}
     )
     
-    mean_comparison_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
-    mean_comparison_bar.update_layout(xaxis_title="Employee Status", yaxis_title=" ",   yaxis_range=[0, 35], showlegend=False, margin=dict(t=50, l=25, r=25, b=25))
+    histogram.update_layout(
+        template="plotly_white",
+        xaxis_title=slct_var_histogram,
+        yaxis_title="Cantidad de clientes (volumen)",
+        legend_title="Riesgo real"
+    )
+
+    scatterplot = px.scatter(
+        df_model, 
+        x=slct_X, 
+        y=slct_Y,
+        color="IsUK", 
+        color_continuous_scale=px.colors.sequential.Reds, 
+        title=f"Correlación: {slct_X} vs {slct_Y} (mapeo de probabilidad de Churn)",
+        hover_data=["TotalExpensive", "FrecuencyHist"]
+    )
     
-    return exist_risk_bar, mean_comparison_bar
+    scatterplot.update_layout(
+        template="plotly_white",
+        xaxis_title=slct_X,
+        yaxis_title=slct_Y,
+        coloraxis_colorbar=dict(title="Probabilidad<br>de Churn")
+    )
+
+    return histogram, scatterplot
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
     app.run_server(host='0.0.0.0', port=port)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
