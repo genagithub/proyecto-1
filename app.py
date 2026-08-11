@@ -152,7 +152,7 @@ app.layout = html.Div(id="body", className="e1_body", children=[
 html.H1("Análisis prescriptivo de Churn Rate", id="title", className="e1_title"),
 html.Div(id="dashboard", className="e1_dashboard", children=[
     html.Div(id="graph_div_1", className="e1_graph_div", children=[
-        html.Div(id="dropdown_div_1", className="e1_dropdown_div", children=[
+        html.Div(id="dropdown_div_1", className="e1_dropdown_div", style={"align-items":"flex-start"}, children=[
             dcc.Dropdown(id="dropdown_1", className="e1_dropdown",
                         options = [
                             {"label":"Gasto total","value":"TotalExpenditure"},
@@ -167,8 +167,8 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         dcc.Graph(id="histogram", className="e1_graph", figure={})
     ]),
     html.Div(id="graph_div_2", className="e1_graph_div", children=[
-        html.Div(id="dropdown_div_2", className="e1_dropdown_div",children=[
-            dcc.Dropdown(id="dropdown_2", className="e1_dropdown",
+        html.Div(id="dropdown_div_2", className="e1_dropdown_div", style={"align-items":"center"}, children=[
+            dcc.Dropdown(id="dropdown_2", className="e1_dropdown", style={"padding":"0 7px"},
                         options = [
                             {"label":"Recencia","value":"RecencyObs"}, 
                             {"label":"Ritmo excedido","value":"ExcessivePace"}, 
@@ -177,7 +177,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
                         value="RecencyObs",
                         multi=False,
                         clearable=False),
-            dcc.Dropdown(id="dropdown_3", className="e1_dropdown",
+            dcc.Dropdown(id="dropdown_3", className="e1_dropdown", style={"padding":"0 7px"},
                         options = [
                             {"label":"Gasto total","value":"TotalExpenditure"},
                             {"label":"Ticket promedio","value":"AverageTicket"}, 
