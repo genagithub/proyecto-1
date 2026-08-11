@@ -20,7 +20,7 @@ a{
 .e1_title:hover{
     cursor:pointer;
 }
-.e1_dashboards {
+.e1_dashboard {
     width:100%;
     overflow-x: hidden;
     height: 450px;
