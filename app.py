@@ -4,6 +4,7 @@ import plotly.express as px
 import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.tree import DecisionTreeClassifier
 
@@ -109,13 +110,24 @@ features_df = pd.merge(features_df, geography[["CustomerID", "IsUK"]], on="Custo
 
 df_model = pd.merge(features_df, target_df[["CustomerID", "Target"]], on="CustomerID", how="inner")
 
+X_train, X_test, y_train, y_test = train_test_split(df_model.drop(columns=["CustomerID", "Target"]), 
+                                                    df_model["Target"], 
+                                                    test_size=0.20, 
+                                                    random_state=42, 
+                                                    stratify=df_model["Target"])
+
 cart_model = DecisionTreeClassifier(criterion="entropy",
                                     max_depth=10,
                                     min_samples_leaf=10,  
                                     class_weight="balanced", 
                                     random_state=42)
 
-cart_model.fit(df_model[df_model.columns[:-1]], df_model["Target"])
+cart_model.fit(X_train, y_train)
+
+y_pred = cart_model.predict(X_test)
+y_pred_prob = cart_model.predict_proba(X_test)
+
+df_model["PredictProbability"] = y_pred_prob
 
 app = dash.Dash(__name__)
 server = app.server
@@ -209,7 +221,7 @@ def update_dashboard(slct_var_histogram, slct_X, slct_Y):
         df_model, 
         x=slct_X, 
         y=slct_Y,
-        color="IsUK", 
+        color="PredictProbability", 
         color_continuous_scale=px.colors.sequential.Reds, 
         title=f"Correlación: {slct_X} vs {slct_Y} (mapeo de probabilidad de Churn)",
         hover_data=["TotalExpensive", "FrecuencyHist"]
