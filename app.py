@@ -251,21 +251,24 @@ def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
         color="HighProb", 
         color_continuous_scale=px.colors.sequential.Reds, 
         title=f"Correlación: {slct_var_X} vs {slct_var_Y} (mapeo de probabilidad de Churn)",
-        hover_data={
-            slct_var_X: True,
-            slct_var_Y: True,
-            "HighProb": ":.2%",
-            "TotalExpenditure": True,
-            "FrecuencyHist": True,
-            "CustomerID": True
-        }
+        labels={"HighProb": "Probabilidad de Churn"},
+        hover_data=[
+            slct_var_X,
+            slct_var_Y,
+            "HighProb",
+            "TotalExpenditure",
+            "FrecuencyHist",
+            "CustomerID"
+        ]
     )
+
+    scatterplot.update_traces(hovertemplate=None)
     
     scatterplot.update_layout(
         template="plotly_white",
         xaxis_title=slct_var_X,
         yaxis_title=slct_var_Y,
-        coloraxis_colorbar=dict(title="Probabilidad<br>de Churn")
+        coloraxis_colorbar=dict(title="Probabilidad<br>de Churn", tickformat=".2%")
     )
 
     return histogram, scatterplot
