@@ -251,15 +251,7 @@ def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
         color="HighProb", 
         color_continuous_scale=px.colors.sequential.Reds, 
         title=f"Correlación: {slct_var_X} vs {slct_var_Y} (mapeo de probabilidad de Churn)",
-        labels={"HighProb": "Probabilidad de Churn"},
-        hover_data=[
-            slct_var_X,
-            slct_var_Y,
-            "HighProb",
-            "TotalExpenditure",
-            "FrecuencyHist",
-            "CustomerID"
-        ]
+        labels={"HighProb": "Probabilidad de Churn"}
     )
 
     scatterplot.update_traces(hovertemplate=None)
