@@ -197,7 +197,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
        html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
        html.Div(f"Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito): {total_customers_predicted_risk - approved_campaigns}", id="reject_campagins", className="e1_txt"),
        html.Div(f"Dinero directo RESCATADO / AHORRADO en presupuesto publicitario: ${budget_savings}", id="ROI", className="e1_txt"),
-       html.H3("Top 5 clientes a fidelizar", id="H3", style={"font-family":"sans-serif","font-weight":"bold"}),
+       html.H3("Top 5 clientes a fidelizar", id="H3", style={"font-family":"sans-serif","font-weight":"bold","margin-top":"7px"}),
        html.Div(id="matrix", className="e1_matrix", children=[
             html.Div([html.B("ID", className="e1_header")], id="col_1"),
             html.Div([html.B("Gasto total", className="e1_header")], id="col_2"),
