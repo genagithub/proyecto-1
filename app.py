@@ -150,7 +150,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body", className="e1_body", children=[
-html.H1("Análisis prescriptivo de Churn Rate", id="title", className="e1_title"),
+html.A(href="https://github.com/genagithub/proyecto-1/blob/main/README.md", children=[html.H1("Análisis prescriptivo de Churn Rate", id="title", className="e1_title")]),
 html.Div(id="dashboard", className="e1_dashboard", children=[
     html.Div(id="graph_div_1", className="e1_graph_div", children=[
         html.Div(id="dropdown_div_1", className="e1_dropdown_div", style={"justify-content":"flex-start"}, children=[
@@ -191,7 +191,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         dcc.Graph(id="scatterplot", className="e1_graph", figure={})
     ]),
 ]),
-   html.H2("Optimización de presupuesto publicitario", id="H2", className="e1_title"),  
+   html.A(href="https://github.com/genagithub/proyecto-1/blob/main/README.md", children=[html.H2("Optimización de presupuesto publicitario", id="H2", className="e1_title")]),  
    html.Div(id="div_prescritive", className="e1_div_prescriptive", children=[
        html.Div(f"Total de clientes detectados en riesgo por el modelo: {total_customers_predicted_risk}", id="total_customers", className="e1_txt"),
        html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
