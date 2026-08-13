@@ -10,7 +10,7 @@ La solución traduce la problemática comercial en un entorno analítico control
 
 - **Variable Objetivo Ordinal::** Se estratificaron del riesgo de abandono en tres niveles críticos (Sin Riesgo, Moderado y Alto) calculados mediante el análisis estadístico de cuantiles sobre los días de inactividad de los clientes.
 - **:Ingeniería de Características Relativas:** Se construyeron predictores de alta densidad informativa, como el ritmo excedido y la estabilidad de compra, etc., que capturan el reloj biológico individual de cada cuenta.
-- **Algoritmo CART de Caja Blanca::** Entrenamiento de un árbol de decisión con balanceo nativo de clases e hiperparámetros controlados para generar reglas de negocio directas, legibles y fácilmente integrables al CRM.
+- **Algoritmo CART de Caja Blanca::** Se entrenó un modelo de Árbol de Decisión con balanceo nativo de clases e hiperparámetros controlados para generar reglas de negocio directas, legibles y fácilmente integrables al CRM.
 
 ---
 
