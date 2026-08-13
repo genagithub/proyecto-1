@@ -143,7 +143,7 @@ total_customers_predicted_risk = (analysis_roi["ModelPredict"].isin([1, 2])).sum
 approved_campaigns = (analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña").sum()
 budget_savings = (total_customers_predicted_risk  - approved_campaigns) * CAMPAIGN_COST
 
-top_5_customers = analysis_roi.loc[(analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña") & (analysis_roi["HighProb"] >= 65.0),:]
+top_5_customers = analysis_roi.loc[(analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña") & (analysis_roi["HighProb"] >= 0.65),:]
 top_5_customers = top_5_customers.sort_values(by="VEN", ascending=False).head(5)
 
 app = dash.Dash(__name__)
@@ -197,7 +197,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
        html.Div(f"Campañas de pago estratégicamente APROBADAS por ROI: {approved_campaigns}", id="aprove_campaigns", className="e1_txt"),
        html.Div(f"Campañas RECHAZADAS (Se ahorra pauta o pasa a canal gratuito): {total_customers_predicted_risk - approved_campaigns}", id="reject_campagins", className="e1_txt"),
        html.Div(f"Dinero directo RESCATADO / AHORRADO en presupuesto publicitario: ${budget_savings}", id="ROI", className="e1_txt"),
-       html.H3("Top 5 clientes a fidelizar", id="H3", style={"font-family":"sans-serif","font-weight":"bold","margin-top":"7px"}),
+       html.H3("Top 5 clientes a fidelizar", id="H3", style={"font-family":"sans-serif","font-weight":"bold","margin-top":"15px"}),
        html.Div(id="matrix", className="e1_matrix", children=[
             html.Div([html.B("ID", className="e1_header")], id="col_1"),
             html.Div([html.B("Gasto total", className="e1_header")], id="col_2"),
