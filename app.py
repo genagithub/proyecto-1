@@ -143,7 +143,7 @@ total_customers_predicted_risk = (analysis_roi["ModelPredict"].isin([1, 2])).sum
 approved_campaigns = (analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña").sum()
 budget_savings = (total_customers_predicted_risk  - approved_campaigns) * CAMPAIGN_COST
 
-top_5_customers = analysis_roi.loc[(analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña") & (analysis_roi["TotalRiskProb"] >= 0.65),:]
+top_5_customers = analysis_roi.loc[(analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña") & (analysis_roi["TotalRiskProb"] >= 65.0),:]
 top_5_customers = top_5_customers.sort_values(by="VEN", ascending=False).head(5)
 
 app = dash.Dash(__name__)
