@@ -14,7 +14,7 @@ La solución traduce la problemática comercial en un entorno analítico control
 
 ---
 
-#### 🚀 Solución Analítica:
+#### 🚀 Solución Analítica: Plataforma Prescriptiva CRM
 el resultado final es una herramienta interactiva e informativa que transforma las predicciones estadísticas en acciones comerciales automatizadas, permitiendo a los directivos auditar el riesgo y controlar el presupuesto en tiempo real:
 
 - **Dashboard Interactivo:** Interfaz ejecutiva con selectores dinámicos para explorar el volumen de clientes, monitorear correlaciones críticas y visualizar las fronteras de decisión del modelo.
@@ -24,4 +24,4 @@ el resultado final es una herramienta interactiva e informativa que transforma l
 ---
 
 #### 📌 Propósito de este Proyecto: Impacto Financiero
-**Pauta quirúrgica:** Restringe las campañas de pago únicamente a las cuentas viables, erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
+- **Pauta quirúrgica:** Restringe las campañas de pago únicamente a las cuentas viables, erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
