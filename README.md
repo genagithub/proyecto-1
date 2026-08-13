@@ -9,7 +9,7 @@ La falta de visibilidad sobre los ciclos de compra en el modelo transaccional de
 La solución traduce la problemática comercial en un entorno analítico controlado mediante la preparación de una matriz de datos históricos libre de filtraciones y el entrenamiento de un algoritmo optimizado para la toma de decisiones:
 
 - **Variable Objetivo Ordinal:** Se estratificaron del riesgo de abandono en tres niveles críticos (Sin Riesgo, Moderado y Alto) calculados mediante el análisis estadístico de cuantiles sobre los días de inactividad de los clientes.
-- **:Ingeniería de Características Relativas:** Se construyeron predictores de alta densidad informativa, como el ritmo excedido y la estabilidad de compra, etc., que capturan el reloj biológico individual de cada cuenta.
+- **Ingeniería de Características Relativas:** Se construyeron predictores de alta densidad informativa, como el ritmo excedido y la estabilidad de compra, etc., que capturan el reloj biológico individual de cada cuenta.
 - **Algoritmo CART de Caja Blanca:** Se entrenó un modelo de Árbol de Decisión con balanceo nativo de clases e hiperparámetros controlados para generar reglas de negocio directas, legibles y fácilmente integrables al CRM.
 
 ---
