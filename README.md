@@ -23,5 +23,5 @@ el resultado final es una herramienta interactiva e informativa que transforma l
 
 ---
 
-#### 📌 Propósito de este Proyecto: Impacto Financiero
+#### 📌 Propósito de este Proyecto: Impacto Estratégico
 - **Pauta quirúrgica:** Restringe las campañas de pago únicamente a las cuentas viables, erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
