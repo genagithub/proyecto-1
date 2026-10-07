@@ -4,6 +4,7 @@ import plotly.express as px
 import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.tree import DecisionTreeClassifier
@@ -114,13 +115,7 @@ X_train, X_test, y_train, y_test = train_test_split(df_model.drop(columns=["Cust
                                                     random_state=42, 
                                                     stratify=df_model["Target"])
 
-cart_model = DecisionTreeClassifier(criterion="entropy",
-                                    max_depth=10,
-                                    min_samples_leaf=10,  
-                                    class_weight="balanced", 
-                                    random_state=42)
-
-cart_model.fit(X_train, y_train)
+cart_model = joblib.load("model/cart_model.pkl")
 
 y_pred = cart_model.predict(X_test)
 probabilities = cart_model.predict_proba(X_test)
