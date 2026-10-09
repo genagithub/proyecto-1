@@ -115,7 +115,7 @@ X_train, X_test, y_train, y_test = train_test_split(df_model.drop(columns=["Cust
                                                     random_state=42, 
                                                     stratify=df_model["Target"])
 
-cart_model = joblib.load("model/cart_model.pkl")
+cart_model = joblib.load("model/tree_classification_churn.pkl")
 
 y_pred = cart_model.predict(X_test)
 probabilities = cart_model.predict_proba(X_test)
