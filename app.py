@@ -224,26 +224,29 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
     )
 
     df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
-    df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Weight"))
+    df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Customers"))
     df_grouped["Target"] = df_grouped["Target"].astype(str)
 
     barchart = px.bar(
         df_grouped,
-        x="Weight",
-        y="Target",  
-        color="Range",  
-        orientation="h",  
-        barmode="group",  
-        title=f"Distribución de rangos de {slct_var_barchart} dentro de cada Nivel de Riesgo",
-        labels={"Target": "Estado de riesgo", "Weight": "Cantidad de Clientes"},
-        color_discrete_sequence=px.colors.sequential.Viridis,  
+        x="Customers",
+        y="Range",  
+        color="Target",  
+        orientation="h",
+        barmode="stack", 
+        title=f"Composición de riesgo por rangos de {slct_var_barchart}",
+        color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"},
+        labels={
+            "Target": "Estado de riesgo",
+            "Customers": "Cantidad de clientes",
+            "Rango": "Rango de valores",
+        },
         text_auto=True,  
     )
 
     barchart.update_layout(
         template="plotly_white",
-        yaxis={"categoryorder": "category ascending"},
-        legend_title=f"Rangos de {slct_var_histogram}",
+        yaxis={"categoryorder": "category ascending"}
     )
 
     return histogram, barchart
