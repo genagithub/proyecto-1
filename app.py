@@ -235,7 +235,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         orientation="h",  
         barmode="group",  
         title=f"Distribución de rangos de {slct_var_barchart} dentro de cada Nivel de Riesgo",
-        labels={"Target": "Estado de riesgo", "Peso": "Cantidad de Clientes"},
+        labels={"Target": "Estado de riesgo", "Weight": "Cantidad de Clientes"},
         color_discrete_sequence=px.colors.sequential.Viridis,  
         text_auto=True,  
     )
