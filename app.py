@@ -154,6 +154,7 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
                             {"label":"Gasto total","value":"TotalExpenditure"},
                             {"label":"Frecuencia histórica","value":"FrecuencyHist"},
                             {"label":"Recencia","value":"RecencyObs"},
+                            {"label":"Variancia de TBP","value":"VarianceTBP"},
                             {"label":"Tasa de cancelaciones","value":"CancellationsRate"},
                             {"label":"Variancia de gasto total","value":"ExpenditureVariance"}
                         ],
