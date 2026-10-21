@@ -166,24 +166,16 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         html.Div(id="dropdown_div_2", className="e1_dropdown_div", style={"justify-content":"center"}, children=[
             dcc.Dropdown(id="dropdown_2", className="e1_dropdown", style={"padding-right":"5px"},
                         options = [
+                            {"label":"Gasto total","value":"TotalExpenditure"},
                             {"label":"Recencia","value":"RecencyObs"}, 
                             {"label":"Ritmo excedido","value":"ExcessivePace"}, 
                             {"label":"TBT promedio","value":"AverageTBT"}
                         ],
                         value="RecencyObs",
                         multi=False,
-                        clearable=False),
-            dcc.Dropdown(id="dropdown_3", className="e1_dropdown", style={"padding-left":"5px"},
-                        options = [
-                            {"label":"Gasto total","value":"TotalExpenditure"},
-                            {"label":"Ticket promedio","value":"AverageTicket"}, 
-                            {"label":"Cantidades totales","value":"TotalQuantities"}
-                        ],
-                        value="TotalExpenditure",
-                        multi=False,
                         clearable=False)
-        ]),
-        dcc.Graph(id="scatterplot", className="e1_graph", figure={})
+        ]),  
+        dcc.Graph(id="barchart", className="e1_graph", figure={})
     ]),
 ]),
    html.A(href="https://github.com/genagithub/proyecto-1/blob/main/README.md", children=[html.H2("Optimización de inversión publicitaria", id="H2", className="e1_title")]),  
@@ -213,13 +205,12 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
 
 @app.callback(
     [Output(component_id="histogram",component_property="figure"),
-    Output(component_id="scatterplot",component_property="figure")],
+    Output(component_id="barchart",component_property="figure")],
     [Input(component_id="dropdown_1",component_property="value"),
-    Input(component_id="dropdown_2",component_property="value"),
-    Input(component_id="dropdown_3",component_property="value")]
+    Input(component_id="dropdown_2",component_property="value")]
 )
 
-def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
+def update_dashboard(slct_var_histogram, slct_var_barchart):
 
     histogram = px.histogram(
         df_model, 
@@ -231,42 +222,33 @@ def update_dashboard(slct_var_histogram, slct_var_X, slct_var_Y):
         color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"}, 
         labels={"Target": "Estado de riesgo"}
     )
-    
-    histogram.update_layout(
+
+    df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
+
+    df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Weight"))
+
+    df_grouped["Target"] = df_grouped["Target"].astype(str)
+
+    barchart = px.bar(
+        df_grouped,
+        x="Weight",
+        y="Target",  
+        color="Range",  
+        orientation="h",  
+        barmode="group",  
+        title=f"Distribución de rangos de {slct_var_histogram} dentro de cada Nivel de Riesgo",
+        labels={"Target": "Estado de riesgo", "Peso": "Cantidad de Clientes"},
+        color_discrete_sequence=px.colors.sequential.Viridis,  
+        text_auto=True,  
+    )
+
+    barchart.update_layout(
         template="plotly_white",
-        xaxis_title=slct_var_histogram,
-        yaxis_title="Cantidad de clientes (volumen)",
-        legend_title="Riesgo real"
+        yaxis={"categoryorder": "category ascending"},
+        legend_title=f"Rangos de {slct_var_histogram}",
     )
 
-    scatterplot = px.scatter(
-        analysis_roi, 
-        x=slct_var_X, 
-        y=slct_var_Y,
-        color="HighProb", 
-        color_continuous_scale=px.colors.sequential.Reds, 
-        title=f"Correlación: {slct_var_X} vs {slct_var_Y} (mapeo de probabilidad de Churn)",
-        labels={"HighProb": "Probabilidad de Churn"},
-        hover_data=[
-            slct_var_X,
-            slct_var_Y,
-            "HighProb",
-            "TotalExpenditure",
-            "FrecuencyHist",
-            "CustomerID"
-        ]
-    )
-
-    scatterplot.update_traces(hovertemplate=None)
-    
-    scatterplot.update_layout(
-        template="plotly_white",
-        xaxis_title=slct_var_X,
-        yaxis_title=slct_var_Y,
-        coloraxis_colorbar=dict(title="Probabilidad<br>de Churn", tickformat=".2%")
-    )
-
-    return histogram, scatterplot
+    return histogram, barchart
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 
