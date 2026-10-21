@@ -148,7 +148,7 @@ app.layout = html.Div(id="body", className="e1_body", children=[
 html.A(href="https://github.com/genagithub/proyecto-1/blob/main/README.md", children=[html.H1("Análisis prescriptivo de Churn Rate", id="title", className="e1_title")]),
 html.Div(id="dashboard", className="e1_dashboard", children=[
     html.Div(id="graph_div_1", className="e1_graph_div", children=[
-        html.Div(id="dropdown_div_1", className="e1_dropdown_div", style={"justify-content":"flex-start"}, children=[
+        html.Div(id="dropdown_div_1", className="e1_dropdown_div", children=[
             dcc.Dropdown(id="dropdown_1", className="e1_dropdown",
                         options = [
                             {"label":"Gasto total","value":"TotalExpenditure"},
@@ -163,8 +163,8 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
         dcc.Graph(id="histogram", className="e1_graph", figure={})
     ]),
     html.Div(id="graph_div_2", className="e1_graph_div", children=[
-        html.Div(id="dropdown_div_2", className="e1_dropdown_div", style={"justify-content":"center"}, children=[
-            dcc.Dropdown(id="dropdown_2", className="e1_dropdown", style={"padding-right":"5px"},
+        html.Div(id="dropdown_div_2", className="e1_dropdown_div", children=[
+            dcc.Dropdown(id="dropdown_2", className="e1_dropdown",
                         options = [
                             {"label":"Gasto total","value":"TotalExpenditure"},
                             {"label":"Recencia","value":"RecencyObs"}, 
