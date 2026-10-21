@@ -224,9 +224,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
     )
 
     df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
-
     df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Weight"))
-
     df_grouped["Target"] = df_grouped["Target"].astype(str)
 
     barchart = px.bar(
@@ -236,7 +234,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         color="Range",  
         orientation="h",  
         barmode="group",  
-        title=f"Distribución de rangos de {slct_var_histogram} dentro de cada Nivel de Riesgo",
+        title=f"Distribución de rangos de {slct_var_barchart} dentro de cada Nivel de Riesgo",
         labels={"Target": "Estado de riesgo", "Peso": "Cantidad de Clientes"},
         color_discrete_sequence=px.colors.sequential.Viridis,  
         text_auto=True,  
