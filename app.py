@@ -167,11 +167,14 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
             dcc.Dropdown(id="dropdown_2", className="e1_dropdown",
                         options = [
                             {"label":"Gasto total","value":"TotalExpenditure"},
-                            {"label":"Recencia","value":"RecencyObs"}, 
-                            {"label":"Ritmo excedido","value":"ExcessivePace"}, 
-                            {"label":"TBT promedio","value":"AverageTBT"}
+                            {"label":"Ticket promedio","value":"TicketAverage"},
+                            {"label":"Cantidades totales","value":"TotalQuantities"},
+                            {"label":"TBT promedio","value":"AverageTBT"},
+                            {"label":"Ritmo excesivo","value":"ExcessivePace"},
+                            {"label":"Tasa de cancelaciones","value":"CancellationsRate"},
+                            {"label":"Índice de estabilidad","value":"PurchasingStability"}
                         ],
-                        value="RecencyObs",
+                        value="TicketAverage",
                         multi=False,
                         clearable=False)
         ]),  
