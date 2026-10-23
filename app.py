@@ -228,7 +228,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         labels={"Target": "Estado de riesgo"}
     )
 
-    df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
+    df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=3).astype(str)
     df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Customers"))
     df_grouped["Target"] = df_grouped["Target"].astype(str)
 
