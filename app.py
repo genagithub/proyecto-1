@@ -223,7 +223,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         color="Target", 
         barmode="group",
         nbins=30,
-        title=f"Distribución de clientes por {slct_var_histogram} y nivel de riesgo",
+        title=f"Distribución de clientes por {slct_var_histogram}",
         color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"}, 
         labels={"Target": "Estado de riesgo"}
     )
@@ -234,8 +234,8 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
 
     barchart = px.bar(
         df_grouped,
-        x="Customers",
-        y="Range",  
+        x="Range",
+        y="Customers",  
         color="Target",  
         orientation="h",
         barmode="stack", 
