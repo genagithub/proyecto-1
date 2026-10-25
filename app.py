@@ -234,8 +234,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
 
     df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
     df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Customers"))
-    df_grouped["Target"] = df_grouped["Target"].astype(str)
-
+    
     barchart = px.bar(
         df_grouped,
         x="Customers",
