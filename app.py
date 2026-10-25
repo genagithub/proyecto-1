@@ -256,7 +256,6 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
     )
 
     barchart.update_layout(template="plotly_white", yaxis={"categoryorder": "category ascending"})
-    barchart.update_yaxes(tickangle=-45, type="category")
 
     return histogram, barchart
 
