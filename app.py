@@ -141,6 +141,8 @@ budget_savings = (total_customers_predicted_risk  - approved_campaigns) * CAMPAI
 top_5_customers = analysis_roi.loc[(analysis_roi["CampaignPrescription"] == "APROBADO: Desplegar campaña") & (analysis_roi["HighProb"] >= 0.65),:]
 top_5_customers = top_5_customers.sort_values(by="VEN", ascending=False).head(5)
 
+color_strategy = {"0": "#2ecc71", "1": "#f1c40f", "2": "#e74c3c"}
+
 app = dash.Dash(__name__)
 server = app.server
 
@@ -217,6 +219,8 @@ html.Div(id="dashboard", className="e1_dashboard", children=[
 
 def update_dashboard(slct_var_histogram, slct_var_barchart):
 
+    df_model["Target"] = df_model["Target"].astype(str) 
+    
     histogram = px.histogram(
         df_model, 
         x=slct_var_histogram, 
@@ -224,7 +228,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         barmode="group",
         nbins=30,
         title=f"Distribución de clientes por {slct_var_histogram}",
-        color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"}, 
+        color_discrete_map=color_strategy, 
         labels={"Target": "Estado de riesgo"}
     )
 
@@ -240,7 +244,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         orientation="h",
         barmode="stack", 
         title=f"Composición de riesgo por rangos de {slct_var_barchart}",
-        color_discrete_map={0: "#2ecc71", 1: "#f1c40f", 2: "#e74c3c"},
+        color_discrete_map=color_strategy,
         labels={
             "Target": "Estado de riesgo",
             "Customers": "Cantidad de clientes",
