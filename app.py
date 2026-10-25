@@ -229,7 +229,10 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         nbins=30,
         title=f"Distribución de clientes por {slct_var_histogram}",
         color_discrete_map=color_strategy, 
-        labels={"Target": "Estado de riesgo"}
+        labels={
+            "Target": "Estado de riesgo",
+             "count": "Cantidad"
+        }
     )
 
     df_model["Range"] = pd.qcut(df_model[slct_var_barchart], q=3, duplicates="drop").astype(str)
@@ -256,6 +259,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         template="plotly_white",
         yaxis={"categoryorder": "category ascending"}
     )
+    barchart.update_xaxes(tickangle=-45, type="category")
 
     return histogram, barchart
 
