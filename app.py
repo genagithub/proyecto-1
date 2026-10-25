@@ -228,14 +228,14 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         labels={"Target": "Estado de riesgo"}
     )
 
-    df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=3).astype(str)
+    df_model["Range"] = pd.cut(df_model[slct_var_barchart], bins=4).astype(str)
     df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Customers"))
     df_grouped["Target"] = df_grouped["Target"].astype(str)
 
     barchart = px.bar(
         df_grouped,
-        x="Range",
-        y="Customers",  
+        x="Customers",
+        y="Range",  
         color="Target",  
         orientation="h",
         barmode="stack", 
@@ -244,7 +244,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         labels={
             "Target": "Estado de riesgo",
             "Customers": "Cantidad de clientes",
-            "Rango": "Rango de valores",
+            "Range": "Rango de valores",
         },
         text_auto=True,  
     )
