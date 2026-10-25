@@ -235,7 +235,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         }
     )
 
-    df_model["Range"] = pd.qcut(df_model[slct_var_barchart], q=3, duplicates="drop").astype(str)
+    df_model["Range"] = pd.qcut(df_model[slct_var_barchart], q=3).astype(str)
     df_grouped = (df_model.groupby(["Target", "Range"]).size().reset_index(name="Customers"))
     
     barchart = px.bar(
@@ -255,10 +255,7 @@ def update_dashboard(slct_var_histogram, slct_var_barchart):
         text_auto=True,  
     )
 
-    barchart.update_layout(
-        template="plotly_white",
-        yaxis={"categoryorder": "category ascending"}
-    )
+    barchart.update_layout(template="plotly_white", yaxis={"categoryorder": "category ascending"})
     barchart.update_xaxes(tickangle=-45, type="category")
 
     return histogram, barchart
