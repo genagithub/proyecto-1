@@ -1,7 +1,9 @@
 ### 📊 Reporte de asignación financiera para retención de clientes
 
 #### 🎯 Contexto del Problema de Negocio
-La falta de visibilidad sobre los ciclos de compra en el modelo transaccional de la empresa genera gastos imprevistos y pérdidas silenciosas de facturación, al no existir un mecanismo para detectar cuándo un cliente abandona la plataforma de manera definitiva. A través de la explotación del histórico de transacciones del CRM corporativo y de las métricas de rendimiento y costo que el equipo de Marketing otorgó de forma colaborativa, el objetivo es predecir los cambios en el comportamiento comercial y determinar los sectores de beneficio en riesgo de abandono grave, permitiendo anticipar el enfriamiento de las cuentas y coordinar esfuerzos de retención estructurados. 
+La falta de visibilidad sobre los ciclos de compra en el modelo transaccional de la empresa genera gastos imprevistos y pérdidas silenciosas de facturación, al no existir un mecanismo para detectar cuándo un cliente abandona la plataforma de manera definitiva. 
+
+A través de la explotación del histórico de transacciones del CRM corporativo y de las métricas de rendimiento y costo que el equipo de Marketing otorgó de forma colaborativa, el objetivo es predecir los cambios en el comportamiento comercial y determinar los sectores de beneficio en riesgo de abandono grave, permitiendo anticipar el enfriamiento de las cuentas y coordinar esfuerzos de retención estructurados. 
 
 ---
 
