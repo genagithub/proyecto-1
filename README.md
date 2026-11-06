@@ -26,4 +26,4 @@ el resultado final es una herramienta interactiva e informativa que transforma l
 ---
 
 #### 📌 Propósito: Impacto Directo
-- **Pauta quirúrgica:** El modelo conectará directamente con los sistemas de gestión de clientes y marketing restringiendo las campañas de pago únicamente a las cuentas viables y erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
+- **Pauta quirúrgica:** Su integración en los sistemas de gestión de clientes (CRM) y plataformas de marketing habilitará una estrategia de mitigación predictiva del riesgo de deserción (churn). La solución opera como un motor de asignación prescriptiva de capital que restringe los incentivos financieros y las campañas de pago únicamente a las cuentas viables y de alto valor estratégico, erradicando por completo el desperdicio presupuestario en segmentos no rentables y transformando la retención de clientes en una disciplina de inversión de precisión que asegura un retorno económico positivo y maximiza el valor de vida del cliente (Lifetime Value) para la organización.
