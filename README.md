@@ -26,4 +26,4 @@ el resultado final es una herramienta interactiva e informativa que transforma l
 ---
 
 #### 📌 Propósito: Impacto Directo
-- **Pauta quirúrgica:** Restringe las campañas de pago únicamente a las cuentas viables, erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
+- **Pauta quirúrgica:** El modelo conectará directamente con los sistemas de gestión de clientes y marketing restringiendo las campañas de pago únicamente a las cuentas viables y erradicando el desperdicio de presupuesto en clientes de bajo valor y asegurando un retorno económico positivo en cada intento de rescate.
