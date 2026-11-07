@@ -1,4 +1,4 @@
-### 📊 Asignación financiera para retención de clientes
+### 📊 Asignación financiera para retención de clientes en riesgo de churn
 
 #### 🎯 Contexto del problema de negocio
 La falta de visibilidad sobre los ciclos de compra en el modelo transaccional de la empresa genera gastos imprevistos y pérdidas silenciosas de facturación, al no existir un mecanismo para detectar cuándo un cliente abandona la plataforma de manera definitiva. 
