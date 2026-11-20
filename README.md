@@ -5,6 +5,14 @@ La falta de visibilidad sobre los ciclos de compra en el modelo transaccional de
 
 A través de la explotación del histórico de transacciones del CRM corporativo y de las métricas de rendimiento y costo que el equipo de Marketing otorgó de forma colaborativa, el objetivo es predecir los cambios en el comportamiento comercial y determinar los sectores de beneficio en riesgo de abandono grave, permitiendo anticipar el enfriamiento de las cuentas y coordinar esfuerzos de retención estructurados. 
 
+--- 
+
+#### 💡 Hallazgos clave (insights): Radiografía del abandono
+La interpretación del modelo tradujo el historial transaccional de nuestros clientes en reglas claras de comportamiento, permitiendo separar con precisión quiénes mantienen un vínculo saludable, quiénes están en peligro real de fuga y dónde enfocar el presupuesto comercial:
+- **La frontera trimestral (base segura):** El 56.4% de nuestros clientes realiza al menos una compra cada 85 días, demostrando un compromiso activo con cero riesgo de abandono. Este hallazgo permite excluir automáticamente a más de la mitad de la base de las campañas de descuentos preventivos, protegiendo el margen de ganancia y enfocándolos únicamente en venta cruzada (cross-selling).
+- **Fuga silenciosa de alto valor:** Se identificó un segmento crítico que representa el 5.3% de la base, compuesto por clientes que solían comprar con un ticket promedio alto y regularidad constante, pero que llevan más de 6 meses (182 días) sin actividad. Con un 91% de certeza de abandono definitivo, este grupo requiere intervención inmediata y personalizada de Marketing por su alto impacto en ingresos.
+- **gestión de la zona gris (prevención escalable):** El 38.3% restante de los clientes transita una etapa intermedia donde el riesgo de pérdida es gradual y responde a factores variables. Para optimizar la inversión en este segmento, se automatiza la asignación de costos de retención, graduando el presupuesto (bajo o alto) según el valor histórico y el nivel de incertidumbre de cada cliente.
+
 ---
 
 #### 🛠️ Enfoque técnico y modelado
